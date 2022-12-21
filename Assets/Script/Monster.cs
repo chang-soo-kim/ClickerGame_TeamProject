@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
+    [SerializeField] MonsterData[] monsterData;
+
 
     [SerializeField] Monster monsterPrefab;
     Monster monster;
-    int monsterHP { get; set; }
+    public int monsterHP { get; set; }
 
-    int monsterMaxHP = 100;
+    public int monsterMaxHP = 100;
 
-    int monsterCurCount = 0;
-    int monsterMaxCount = 1;
+    public int monsterGiveGold;
 
     int autoDamage { get; set; }
 
@@ -20,9 +21,9 @@ public class Monster : MonoBehaviour
     {
         monsterHP = monsterMaxHP;
 
-        monsterCurCount = monsterMaxCount;
-        
-        autoDamage =1;
+        autoDamage = 1;
+
+        monsterGiveGold = 10;
     }
 
     // Start is called before the first frame update
@@ -30,16 +31,21 @@ public class Monster : MonoBehaviour
     {
 
     }
-
+    float time = 0f;
 
     // Update is called once per frame
     void Update()
     {
-        monsterHP -= autoDamage;
-        UIManager.INSTANCE.AutoDamageText.text = autoDamage.ToString();
+        // 1초마다 1씩 공격
+        time += Time.deltaTime;
+        if (time >= 1f)
+        {
+            monsterHP -= autoDamage;
+            UIManager.INSTANCE.AutoDamageText.text = autoDamage.ToString();
+            time = 0f;
+        }
+
     }
-
-
 
     public void HitToMonster(int damage)
     {
@@ -54,6 +60,8 @@ public class Monster : MonoBehaviour
             Destroy(this.gameObject);
 
             UIManager.INSTANCE.GameClearUI.gameObject.SetActive(true); // 게임 클리어 시, 게임 멈춤
+
+            // 플레이어에게 GiveGold 만큼 전달
         }
     }
 

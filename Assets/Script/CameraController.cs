@@ -9,7 +9,7 @@ public class CameraController : MonoBehaviour
     float MaxDistance = 1000f;
     Vector3 MousePos;
     Camera cam;
-    int attackPower = 10;
+    int attackPower = 1;
 
     private void Awake()
     {
