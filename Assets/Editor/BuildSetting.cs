@@ -12,7 +12,7 @@ public class BuildSetting
     {
         string desktop = "C:/MetaTrend_2";
         string buildPath = desktop + "/MiniGame_2/";
-        string[] scene = { "Assets/Scenes/SampleScene.unity" };
+        string[] scene = { "Assets/Scenes/GameScene.unity" };
         string folder = "";
 
         FileInfo buildInfo = new FileInfo(buildPath);
