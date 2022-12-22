@@ -96,6 +96,7 @@ public class Monster : MonoBehaviour
         }
     }
 
+    
     // 몬스터 죽이고 나면 UI 창 남아있고, 몬스터 색상 안바뀐채로 다시 나옴. 이전 몬스터 안 사라짐
     void ClearUI()
     {

@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
     public GameObject SettingUI = null;
 
     public Slider monsterHpSlider;
-    public TextMeshProUGUI monsterHpText;
+    public TextMeshProUGUI monsterHpText=null;
 
     [Header("무기/강화 정보")]
     // Wepon
@@ -100,6 +100,7 @@ public class UIManager : MonoBehaviour
     }
     private void Start()
     {
+        monsterHpText.text = "123";
         monsterHpText.text = monster.monsterCurHP.ToString()+ " / " + monster.monsterMaxHP.ToString();       
         monsterHpSlider.value = monster.monsterCurHP/monster.monsterMaxHP;
         MonsterName.text = monster.monsterName.ToString();
@@ -122,10 +123,8 @@ public class UIManager : MonoBehaviour
     {
         monsterHpText.text = monster.monsterCurHP.ToString() + " / " + monster.monsterMaxHP.ToString();
         monsterHpSlider.value = (float)monster.monsterCurHP / (float)monster.monsterMaxHP;
-
-        
-        //Debug.Log("hp" + monster.monsterCurHP / monster.monsterMaxHP);
-
+                
+        Debug.Log("hp" + monster.monsterCurHP / monster.monsterMaxHP);
 
         MonsterName.text = monster.monsterName.ToString();
         MonsterStage.text = monster.monsterStage.ToString();
