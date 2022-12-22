@@ -20,6 +20,13 @@ public class Player : MonoBehaviour
     {
         cam = Camera.main;
         monster = FindObjectOfType<Monster>();
+
+        UIManager.INSTANCE.weponNameText.text = "weponNameText";
+        UIManager.INSTANCE.weponLevelText.text = "weponLevelText";
+        UIManager.INSTANCE.weponPower.text = "weponPower";
+        //UIManager.instance.weponNameText.text = weapons[UIManager.instance.WeaponUpgradeNum].WeaponName;
+        //UIManager.instance.weponLevelText.text = weapons[UIManager.instance.WeaponUpgradeNum].WeaponDmg.ToString();
+        //UIManager.instance.weponPower.text = weapons[UIManager.instance.WeaponUpgradeNum].ToString();
     }
 
     void Update()
@@ -29,30 +36,31 @@ public class Player : MonoBehaviour
             MousePos = cam.ScreenToWorldPoint(Input.mousePosition);
 
             RaycastHit2D hit = Physics2D.Raycast(MousePos, transform.forward, MaxDistance);
-            if (hit == false)
-            {
-                return;
-            }
+            if (hit == false) return;
+
             Debug.DrawRay(MousePos, transform.forward * 10, Color.red, 0.3f);
             if (hit.collider.CompareTag("Monster") == true)
             {
-                if (UIManager.INSTANCE.isBuff)
+                if (UIManager.instance.isBuff)
                 {
-                    monster.HitToMonster(weapons[UIManager.instance.WeaponUpgrade].WeaponDmg * 2);
+                   // monster.HitToMonster(weapons[UIManager.instance.WeaponUpgradeNum].WeaponDmg * 2 + UIManager.instance.CurRan);
                 }
                 else
                 {
-                    monster.HitToMonster(weapons[UIManager.instance.WeaponUpgrade].WeaponDmg);
+                   // monster.HitToMonster(weapons[UIManager.instance.WeaponUpgradeNum].WeaponDmg + UIManager.instance.CurRan);
                 }
-
-                /*if (hit)
+                if (hit)
                 {
                     hit.transform.GetComponent<SpriteRenderer>().color = Color.red;
-                }*/
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        hit.transform.GetComponent<SpriteRenderer>().color = Color.clear;
+                    }
+                }
             }
 
         }
     }
 
-   
+
 }

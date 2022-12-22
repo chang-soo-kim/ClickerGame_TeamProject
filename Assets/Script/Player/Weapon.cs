@@ -5,8 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Weapon", menuName = "Scriptable Object/Weapon")]
 public class Weapon : ScriptableObject
 {
-    public SpriteRenderer WeaponImg;
-    
+    public Sprite WeaponImg;
+    public string WeaponName;
     public int WeaponLevel;
     public int WeaponDmg;
 }

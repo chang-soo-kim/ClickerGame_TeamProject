@@ -29,22 +29,49 @@ public class UIManager : MonoBehaviour
     #endregion
     //
 
+    public System.Action action;
 
     // 데미지 출력 텍스트 - 몬스터 위치에 데미지 값 출력
 
-    public TextMeshProUGUI AutoDamageText;
-    public TextMeshProUGUI AttackDamageText;
-    public TextMeshProUGUI TimerText;
+    [Header("플레이어 정보")]
+    public TextMeshProUGUI AutoDamageText = null;
+    public TextMeshProUGUI AttackDamageText = null;
     public TextMeshProUGUI PlayerGold;
+
+    [Header("타이머")]
+    public TextMeshProUGUI TimerText = null;    
+
+    [Header("몬스터 정보")]
     public TextMeshProUGUI MonsterName;
     public TextMeshProUGUI MonsterStage;
 
-    public GameObject GameOverUI;
-    public GameObject GameClearUI;
-    public GameObject SettingUI;
+    [Header("Window UI")]
+    public GameObject GameOverUI = null;
+    public GameObject GameClearUI = null;
+    public GameObject SettingUI = null;
 
     public Slider monsterHpSlider;
     public TextMeshProUGUI monsterHpText;
+
+    [Header("무기/강화 정보")]
+    // Wepon
+    public TextMeshProUGUI weponNameText = null;
+    public TextMeshProUGUI weponLevelText = null;
+    public TextMeshProUGUI weponPower = null;
+
+    // public TextMeshProUGUI goldText = null;
+    public Button UpgradeButton = null;
+    public Button ShopButton = null;
+    public Image ShopWindow = null;
+
+    [Header("설정 정보")]
+    // Setting
+    public Image settingWindow = null;
+    public Button settingButton = null;
+    // public Button gameEndButton = null;
+
+    public Slider SoundBGMSlider = null;
+    public Slider effectBGMSlider = null;
 
     // timer
     float limitTime = 0f;
@@ -54,8 +81,9 @@ public class UIManager : MonoBehaviour
     public int Gold = 0;
     int WUpgradeGold = 10;
     int WSUpgradeGold = 100;
-    public int WeaponUpgrade = 0;
-    int CurRan = 0;
+    public int WeaponUpgradeNum = 0;
+
+    public int CurRan = 0;
     public bool isBuff;
 
     // monster
@@ -101,7 +129,7 @@ public class UIManager : MonoBehaviour
 
         MonsterName.text = monster.monsterName.ToString();
         MonsterStage.text = monster.monsterStage.ToString();
-        PlayerGold.text = Gold.ToString(); // 보상을 얻었을 때만 업데이트 되는 정보
+        PlayerGold.text = Gold.ToString() + " G"; // 보상을 얻었을 때만 업데이트 되는 정보
     }
 
     void UpdateTimer()
@@ -112,14 +140,7 @@ public class UIManager : MonoBehaviour
         time -= Time.deltaTime;
         timer = Mathf.Floor(time);
 
-        if (time >= 10)
-        {
-            TimerText.text = "00" + " : " + timer.ToString();
-        }
-        else if (time < 10)
-        {
-            TimerText.text = "00" + " : " + "0" + timer.ToString();
-        }
+        TimerText.text =  timer.ToString();
         if (timer <= limitTime)
         {
             Time.timeScale = 0;
@@ -143,30 +164,43 @@ public class UIManager : MonoBehaviour
 
     public void OnClickWeaponUpgrade()
     {
-  
-        if(Gold > WUpgradeGold)
+
+        if (Gold > WUpgradeGold)
         {
             Gold -= WUpgradeGold;
+            PlayerGold.text = Gold.ToString() + " G";
             if (Random.Range(0, 10) >= CurRan)
             {
-            ++WeaponUpgrade;
-            WUpgradeGold = (int)(WUpgradeGold * 1.1f);
+                Debug.Log("강화 성공" + CurRan);
+
+                WUpgradeGold = (int)(WUpgradeGold * 1.1f);
                 ++CurRan;
-                if (CurRan == 5)
+                if (CurRan == 10)
                 {
+                    ++WeaponUpgradeNum;
+                    action();
+
                     CurRan = 0;
                 }
             }
-            //골드값 빼주기
-            
+            else
+            {
+                Debug.Log("강화 실패");
+            }
+
+        }
+        else
+        {
+            Debug.Log("골드가 부족합니다.");
         }
     }
 
     public void OnClickSpecialWeaponUpgrade()
     {
-        if(Gold > WSUpgradeGold)
+        if (Gold > WSUpgradeGold && isBuff == false)
         {
             Gold -= WSUpgradeGold;
+            PlayerGold.text = Gold.ToString()+ " G";
             isBuff = true;
             //버튼파괴
         }
@@ -179,6 +213,15 @@ public class UIManager : MonoBehaviour
     public void OffClickSettinButton()
     {
         SettingUI.gameObject.SetActive(false);
+    }
+
+    public void OnClickShopButton() 
+    {
+        ShopWindow.gameObject.SetActive(true);
+    }
+    public void OffClickShopButton()
+    {
+        ShopWindow.gameObject.SetActive(false);
     }
 
     public void UIClear() 
