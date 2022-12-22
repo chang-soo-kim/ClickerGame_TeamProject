@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6337b93a99140cb43bd7fef263c75090, type: 3}
   m_Name: WeaponLV. 1
   m_EditorClassIdentifier: 
-  WeaponImg: {fileID: 0}
+  WeaponImg: {fileID: 4288251886331194031, guid: 545f9c74323fe914c829180b85afb1b7, type: 3}
+  WeaponName: "\uB0A1\uC544\uBE60\uC9C4 \uAC80"
   WeaponLevel: 0
   WeaponDmg: 1

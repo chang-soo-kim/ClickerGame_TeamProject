@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    int AttackPower = 1;
 
     Monster monster;
     [SerializeField]
@@ -16,28 +17,36 @@ public class Player : MonoBehaviour
     // 내 카메라 
     Camera cam;
 
+    public Sprite WeaponImg;
+    public string WeaponName;
+    public int WeaponLevel;
+    public int WeaponDmg;
+
     void Start()
     {
         cam = Camera.main;
         monster = FindObjectOfType<Monster>();
 
-        //UIManager.INSTANCE.weponNameText.text = "weponNameText";
-        //UIManager.INSTANCE.weponLevelText.text = "weponLevelText";
-        //UIManager.INSTANCE.weponPower.text = "weponPower";
-        UIManager.instance.weponNameText.text = weapons[UIManager.instance.WeaponUpgradeNum].WeaponName;
-        UIManager.instance.weponLevelText.text = weapons[UIManager.instance.WeaponUpgradeNum].WeaponDmg.ToString();
-        UIManager.instance.weponPower.text = weapons[UIManager.instance.WeaponUpgradeNum].ToString();
+        WeponLvUP();
     }
 
     void Update()
     {
 
     }
-    public void OnAttack()
-    {
-        // monsterCurHP -= damage;
+    /*public void OnAttack()
+    {        
+        // monster.HitToMonster(AttackPower);
         UIManager.instance.weponPower.text = weapons[UIManager.instance.WeaponUpgradeNum].ToString();
+    }*/
+    public void WeponLvUP()
+    {
+        WeaponImg = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponImg;
+        WeaponName = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponName;
+        WeaponLevel = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponLevel;
+        WeaponDmg = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponDmg;
     }
+
 
 
 

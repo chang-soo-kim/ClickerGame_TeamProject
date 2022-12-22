@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class Monster : MonoBehaviour
 {
-
-    Monster monster;
+    public RectTransform rectTransform;
+        
     public MonsterData[] monsterData = null;
 
     public string monsterName { get; set; }
@@ -14,7 +16,7 @@ public class Monster : MonoBehaviour
     public int monsterMaxHP { get; set; }
     public int monsterGiveGold { get; set; }
     public float monsterLimitTime { get; set; }
-    public SpriteRenderer monsterImage { get; set; }
+    public Image monsterImage { get; set; }
     public bool IsDead { get; set; }
 
     int autoDamage { get; set; }
@@ -27,7 +29,8 @@ public class Monster : MonoBehaviour
 
     private void Awake()
     {
-        monsterImage = GetComponent<SpriteRenderer>();
+
+        monsterImage = GetComponent<Image>();
 
         curMonsterNum = 0;
 
@@ -48,13 +51,16 @@ public class Monster : MonoBehaviour
         autoDamage = 1;
 
         IsDead = false;
+
+        rectTransform = GetComponent<RectTransform>();
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
         isNewMonster = false;
-
+        
     }
     float time = 0f;
 
@@ -65,44 +71,18 @@ public class Monster : MonoBehaviour
         time += Time.deltaTime;
         if (time >= 1f)
         {
+            rectTransform.localScale = new Vector2(1.0f, 1.0f); // 몬스터 원래 사이즈 
             monsterCurHP -= autoDamage;
             UIManager.INSTANCE.AutoDamageText.text = autoDamage.ToString();
             time = 0f;
         }
-
+        
     }
 
-    public void HitToMonster(int damage)
-    {
-        Debug.Log(damage);
+    //
+    //
+    //
 
-        monsterCurHP -= damage;
-
-        UIManager.INSTANCE.AttackDamageText.text = damage.ToString();
-
-        if (monsterCurHP <= 0)
-        {
-            UIManager.INSTANCE.GameClearUI.gameObject.SetActive(true); // 게임 클리어 시, 게임 멈춤
-
-            // UI & Monster Clear
-            ClearUI();
-
-            // 플레이어에게 GiveGold 만큼 전달
-            UIManager.INSTANCE.Gold += monsterGiveGold;
-
-            // 3초 뒤에 새로운 몬스터 생성
-            Invoke("NextMonster", 10f);
-
-        }
-    }
-
-    
-    // 몬스터 죽이고 나면 UI 창 남아있고, 몬스터 색상 안바뀐채로 다시 나옴. 이전 몬스터 안 사라짐
-    void ClearUI()
-    {
-        UIManager.INSTANCE.UIClear();
-    }
-    
 
 
     public void CurMonster()
@@ -122,6 +102,7 @@ public class Monster : MonoBehaviour
         curMonsterNum -= 1;
         isNewMonster = true;
         NewMonster(curMonsterNum);
+        
     }
 
     void NewMonster(int num)
@@ -140,6 +121,7 @@ public class Monster : MonoBehaviour
         monsterName = monsterData[num].Name;
 
         monsterCurHP = monsterData[num].HP;
+        monsterMaxHP = monsterCurHP;
 
         monsterStage = monsterData[num].Stage;
 
@@ -148,6 +130,8 @@ public class Monster : MonoBehaviour
         monsterLimitTime = monsterData[num].LimitTime;
 
         monsterImage.sprite = monsterData[num].Image;
+
+        UIManager.INSTANCE.time = monsterData[num].LimitTime;
     }
 
 }
