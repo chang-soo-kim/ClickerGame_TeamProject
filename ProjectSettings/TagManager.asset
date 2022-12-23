@@ -42,3 +42,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BackGround
+    uniqueID: 646152837
+    locked: 0
+  - name: UI
+    uniqueID: 4231806539
+    locked: 0
+  - name: GameObject
+    uniqueID: 227477769
+    locked: 0
+  - name: Monster
+    uniqueID: 3348886101
+    locked: 0
