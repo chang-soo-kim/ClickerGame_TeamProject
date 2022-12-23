@@ -106,7 +106,7 @@ public class UIManager : MonoBehaviour
 
     // timer
     float limitTime = 0f;
-    public float time = 30;
+    public float time; // 30 , 25 초 들어가는 부분
     float timer;
 
     public int Gold = 0;
@@ -130,8 +130,6 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-
-        
 
         monster = FindObjectOfType<Monster>();
         player = FindObjectOfType<Player>();
@@ -220,8 +218,8 @@ public class UIManager : MonoBehaviour
 
                 upgradeSuccess.gameObject.SetActive(true);
                 upgradeFail.gameObject.SetActive(false);
-                noGold.gameObject.SetActive(false)
-                    ;
+                noGold.gameObject.SetActive(false);
+                
                 soundController.PlaySound("UpgradeSuccess"); // 사운드 출력
 
                 WUpgradeGold = (int)(WUpgradeGold * 1.1f);

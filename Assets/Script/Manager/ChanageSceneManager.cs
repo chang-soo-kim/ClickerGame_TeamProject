@@ -5,12 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class ChanageSceneManager : MonoBehaviour
 {
-
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     public void ONRESTARTGAME()
     {
+        Debug.Log("불러");
         SceneManager.LoadScene("GameScene");
-        Time.timeScale = 1;
-        // 시간이 안흐름
+       
     }
     public void EXIT() 
     { 

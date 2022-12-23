@@ -28,9 +28,7 @@ public class Monster : MonoBehaviour
 
 
     bool isNewMonster { get; set; }
-    bool isDead = false;
-
-    
+       
 
     private void Awake()
     {
@@ -38,7 +36,6 @@ public class Monster : MonoBehaviour
         monsterImage = GetComponent<Image>();
 
         curMonsterNum = 0;
-
 
         monsterName = monsterData[curMonsterNum].Name;
 
@@ -77,10 +74,10 @@ public class Monster : MonoBehaviour
             UIManager.INSTANCE.time = 0;
             return;
         }
-        if (isDead) return;
+        if (IsDead) return;
         if (monsterCurHP <= 0)
         {
-            isDead = true;
+            IsDead = true;
             UIManager.INSTANCE.nextStage.gameObject.SetActive(true);
             // UI & Monster Clear
             UIManager.INSTANCE.UIClear();
@@ -90,7 +87,11 @@ public class Monster : MonoBehaviour
             UIManager.INSTANCE.Gold += monsterGiveGold;
 
         }
+        AutoDamage();
+    }
 
+    void AutoDamage() 
+    {
         // 1초마다 1씩 공격
         time += Time.deltaTime;
         if (time >= 1f)
@@ -100,9 +101,7 @@ public class Monster : MonoBehaviour
             UIManager.INSTANCE.AutoDamageText.text = autoDamage.ToString();
             time = 0f;
         }
-
     }
-
 
 
     public void CurMonster()
@@ -120,7 +119,9 @@ public class Monster : MonoBehaviour
         UIManager.INSTANCE.Monster.interactable = true;
         IsDead = false;
         monsterCurHP = monsterMaxHP;
-        time = 30;
+        //
+        time = monsterLimitTime;
+        //
         UIManager.INSTANCE.GameOverUI.gameObject.SetActive(false);
         UIManager.INSTANCE.GameClearUI.gameObject.SetActive(false);
         UIManager.INSTANCE.RestartButton.gameObject.SetActive(false);
@@ -145,7 +146,9 @@ public class Monster : MonoBehaviour
         UIManager.INSTANCE.Monster.interactable = true;
         IsDead = false;
         monsterCurHP = monsterMaxHP;
-        time = 30;
+        //
+        time = monsterLimitTime;
+        //
         UIManager.INSTANCE.GameOverUI.gameObject.SetActive(false);
         UIManager.INSTANCE.GameClearUI.gameObject.SetActive(false);
         UIManager.INSTANCE.RestartButton.gameObject.SetActive(false);
