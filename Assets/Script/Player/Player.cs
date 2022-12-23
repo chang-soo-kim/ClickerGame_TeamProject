@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-
-    Monster monster;
+    
     [SerializeField]
     Weapon[] weapons;
 
-    // 레이캐스트 최대거리
-    float MaxDistance = 1000f;
-    // 내 마우스
-    Vector3 MousePos;
-    // 내 카메라 
-    Camera cam;
+
 
     public Sprite WeaponImg;
     public string WeaponName;
@@ -23,23 +17,10 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        cam = Camera.main;
-        monster = FindObjectOfType<Monster>();
-
         WeponLvUP();
-     
-
     }
 
-    void Update()
-    {
-       
-    }
-    public void OnAttack()
-    {
-        // monsterCurHP -= damage;
-        UIManager.instance.weponPower.text = weapons[UIManager.instance.WeaponUpgradeNum].ToString();
-    }
+
 
     public void WeponLvUP()
     {
@@ -48,6 +29,8 @@ public class Player : MonoBehaviour
         WeaponLevel = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponLevel;
         WeaponDmg = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponDmg;
     }
+
+
 
 
 }
