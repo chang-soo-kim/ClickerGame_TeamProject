@@ -41,7 +41,6 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI TimerText = null;    
 
     [Header("몬스터 정보")]
-    public Button Monster;
     public TextMeshProUGUI MonsterName;
     public TextMeshProUGUI MonsterStage;
 
@@ -60,10 +59,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI weponLevelText = null;
     public TextMeshProUGUI weponPower = null;
 
-    //
-    public TextMeshProUGUI upgradeCost = null;
+    public TextMeshProUGUI upgradCost = null;
     public TextMeshProUGUI upgradePer = null;
-    //
 
     // public TextMeshProUGUI goldText = null;
     public Button UpgradeButton = null;
@@ -81,7 +78,7 @@ public class UIManager : MonoBehaviour
 
     // timer
     float limitTime = 0f;
-    public float time = 30;
+    float time = 30;
     float timer;
 
     public int Gold = 0;
@@ -94,7 +91,6 @@ public class UIManager : MonoBehaviour
 
     // monster
     Monster monster;
-    //
     Player player;
    
 
@@ -108,7 +104,8 @@ public class UIManager : MonoBehaviour
         Gold = 1000;
     }
     private void Start()
-    {        
+    {
+        monsterHpText.text = "123";
         monsterHpText.text = monster.monsterCurHP.ToString()+ " / " + monster.monsterMaxHP.ToString();       
         monsterHpSlider.value = monster.monsterCurHP/monster.monsterMaxHP;
         MonsterName.text = monster.monsterName.ToString();
@@ -116,8 +113,6 @@ public class UIManager : MonoBehaviour
 
         TimerText.text = monster.monsterLimitTime.ToString();
         PlayerGold.text = Gold.ToString();
-
-        LiveMonster();
     }
 
     // 주석
@@ -141,11 +136,10 @@ public class UIManager : MonoBehaviour
         PlayerGold.text = Gold.ToString() + " G"; // 보상을 얻었을 때만 업데이트 되는 정보
     }
 
-    public void UpdateTimer()
+    void UpdateTimer()
     {
 
         TimerText.text = monster.monsterLimitTime.ToString();
-
 
         time -= Time.deltaTime;
         timer = Mathf.Floor(time);
@@ -153,28 +147,25 @@ public class UIManager : MonoBehaviour
         TimerText.text =  timer.ToString();
         if (timer <= limitTime)
         {
-            DeadPlayer();
-            Invoke("RESTART", 1f);
+            Time.timeScale = 0;
+            GameOverUI.gameObject.SetActive(true);
+
+            // 타이머가 0이 되면 몬스터의 체력을 최대체력으로 리셋한다.
+            monster.monsterCurHP = monster.monsterCurHP;
         }
+
+
     }
 
-    private void RESTART()
-    {
-        Time.timeScale = 1;
-
-        // 타이머가 0이 되면 몬스터의 체력을 최대체력으로 리셋한다.
-        monster.monsterCurHP = monster.monsterMaxHP;
-    }
-
-
-    private void EmptyText()
+    void EmptyText()
     {
         AttackDamageText.text = "";
         AutoDamageText.text = "";
     }
 
+    //강화 클릭을하면 웨폰업그레이드 값이 올라감
 
-    //강화 클릭을 하면 웨폰업그레이드 값이 올라감
+
     public void OnClickWeaponUpgrade()
     {
 
@@ -187,15 +178,12 @@ public class UIManager : MonoBehaviour
                 Debug.Log("강화 성공" + enforceNum);
 
                 WUpgradeGold = (int)(WUpgradeGold * 1.1f);
-                //
-                upgradeCost.text = "강화 비용 : " + WUpgradeGold.ToString() + " G";
+                upgradCost.text ="강화 비용 : " + WUpgradeGold.ToString() + " G";
                 upgradePer.text = "성공 확률 : " + ((10 - enforceNum) * 10).ToString() + " %";
-                //
                 ++enforceNum;
                 if (enforceNum == 10)
                 {
                     ++WeaponUpgradeNum;
-
                     player.WeponLvUP();
                     enforceNum = 0;
                 }
@@ -204,10 +192,12 @@ public class UIManager : MonoBehaviour
             {
                 Debug.Log("강화 실패");
             }
+
             weponimg.sprite = player.WeaponImg;
             weponNameText.text = "장비명 : " + player.WeaponName;
             weponLevelText.text = "강화 단계 : " + enforceNum.ToString();
             weponPower.text = "공격력 : " + (player.WeaponDmg + enforceNum).ToString();
+
         }
         else
         {
@@ -251,32 +241,10 @@ public class UIManager : MonoBehaviour
         SettingUI.gameObject.SetActive(false);
     }
 
-
-
-    void LiveMonster()
-    {
-        Monster.interactable = true;
-        Time.timeScale = 1;
-    }
-    public void DeadMonster() 
-    {
-        Monster.interactable = false;
-        Time.timeScale = 0;
-    }
-
-    void DeadPlayer()
-    {
-        Time.timeScale = 0;
-        GameOverUI.gameObject.SetActive(true);
-
-    }
-
     public void HitToMonster()
     {
-        monster.rectTransform.localScale = new Vector2(0.9f, 0.9f);
-
         if (monster.monsterCurHP <= 0) return;
-
+        
 
         monster.monsterCurHP -= player.WeaponDmg + enforceNum;
 
@@ -284,12 +252,11 @@ public class UIManager : MonoBehaviour
 
         if (monster.monsterCurHP <= 0)
         {
-            monster.monsterCurHP = 0;
+            monster.monsterCurHP = 0;   
             GameClearUI.gameObject.SetActive(true); // 게임 클리어 시, 게임 멈춤
 
             // UI & Monster Clear
             UIClear();
-            DeadMonster();
 
             // 플레이어에게 GiveGold 만큼 전달
             Gold += monster.monsterGiveGold;
@@ -299,7 +266,4 @@ public class UIManager : MonoBehaviour
 
         }
     }
-
-
-
 }

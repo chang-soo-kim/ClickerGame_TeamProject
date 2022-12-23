@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    int AttackPower = 1;
 
     Monster monster;
     [SerializeField]
@@ -28,17 +27,20 @@ public class Player : MonoBehaviour
         monster = FindObjectOfType<Monster>();
 
         WeponLvUP();
+     
+
     }
 
     void Update()
     {
-
+       
     }
-    /*public void OnAttack()
-    {        
-        // monster.HitToMonster(AttackPower);
+    public void OnAttack()
+    {
+        // monsterCurHP -= damage;
         UIManager.instance.weponPower.text = weapons[UIManager.instance.WeaponUpgradeNum].ToString();
-    }*/
+    }
+
     public void WeponLvUP()
     {
         WeaponImg = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponImg;
@@ -46,8 +48,6 @@ public class Player : MonoBehaviour
         WeaponLevel = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponLevel;
         WeaponDmg = weapons[UIManager.INSTANCE.WeaponUpgradeNum].WeaponDmg;
     }
-
-
 
 
 }
